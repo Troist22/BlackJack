@@ -1,0 +1,113 @@
+# 🏗️ Blackjack Game Logic: To-Do & Components List
+
+---
+
+## 1. **Core Classes**
+
+- **Card**
+  - Suit, rank/value, display properties (optional)
+- **ShuffleBootLogic**
+  - Handles boot/deck shuffling, deck rebuilding
+  - Plays `shuffle_sound` for duration of shuffle logic
+- **Player**
+  - Player state (active/busted/blackjack)
+  - Bet amount, hand(s), actions (hit/stand/split/bet)
+- **Dealer**
+  - Dealer's hand/actions, can access boot to deal cards
+  - Handles house rules for dealing/hit/stand
+  - Delegates shuffling to ShuffleBootLogic
+- **Table**
+  - Holds:
+    - Boot (`List<Card>`: deck(s) in play)
+    - List of players, including dealer (optional explicit dealer field)
+    - Each player’s hand (`List<Card>`, for multi-hand/split)
+  - Handles game state, deals, scoring/totals for UI
+  - Upstream interface for UI events (all player actions pass through Table)
+  - Downstream: Relays logic results & state to UI/FX layer
+
+---
+
+## 2. **Logic Flow**
+
+- **UI → Table (Upstream)**
+  - Actions: start game, hit, stand, split, bet, new round, etc.
+- **Table → Dealer/Players/ShuffleBootLogic (Internal)**
+  - Game events are resolved via Table
+  - Dealer is the only class allowed to handle/draw/shuffle cards directly
+- **Dealer → Table (Push results back to Table)**
+  - Handles AI/hands as needed
+- **Table → UI (Downstream)**
+  - States/flags/results for UI to observe (e.g., hand update, win/lose, blackjack)
+  - Triggers UI events: sounds, dialogs, effects based on state/results changes
+
+---
+
+## 3. **Sound Assets To Gather & Triggers**
+
+- **card_turn_sound**  
+  Trigger: Each time a card is dealt/revealed
+- **chips_won**  
+  Trigger: Player wins round (normal win)
+- **chips_lost**  
+  Trigger: Player loses round
+- **defeat**  
+  Trigger: Player out of chips/game over
+- **new_game_sound**  
+  Trigger: New game/round start
+- **background_music** (loopable)  
+  Trigger: Main menu/game idle (starts with scene, stops on exit)
+- **split**  
+  Trigger: Player splits hand
+- **blackjack_victory**  
+  Trigger: Player hits first-hand blackjack (special winner sound)
+- **draw_sound**  
+  Trigger: Push (tie) event
+- **shuffle_sound** (loopable/minimum duration)  
+  Trigger: While ShuffleBootLogic is active (shuffling/boot rebuild logic duration)
+
+---
+
+## 4. **Other Considerations**
+
+- **Table is central.** All requests/updates go through Table; Dealer accesses boot via Table; Players perform actions via Table interface.
+- **Encapsulation:** Dealer never directly accessed by UI or Player, only via Table.
+- **Easy for multipliers:** Can scale to multiple players, AI, or substitute Dealer logic.
+- **Sound triggers are handled in UI layer** (FX), flagged by state/events set by logic.
+- **Shuffle logic is intentionally “slow”/animated for realism and is reusable for other games.**
+- **Future expansion:** Leaderboards, settings, game over modal, more sounds, animations.
+
+---
+
+## 5. **(Optional) Example Directory Structure**
+
+```
+/logic/
+  Card.java
+  Player.java
+  Dealer.java
+  Table.java
+  ShuffleBootLogic.java
+/assets/sounds/
+  card_turn.wav
+  chips_won.wav
+  chips_lost.wav
+  defeat.wav
+  new_game.wav
+  background_music.mp3
+  split.wav
+  blackjack_victory.wav
+  draw.wav
+  shuffle.wav
+```
+
+---
+
+## 6. **Next Steps**
+
+- Design UML or class diagrams as needed for clarity.
+- Gather/import sound assets; stub code for play/triggers in FX.
+- Start with stubs for Table, Card, Dealer, Player, ShuffleBootLogic; fill behaviors iteratively.
+- Set up tests for Table logic (hand scoring, deck integrity, actions).
+- Wire up FX/UI triggers for sounds, round transitions, modal dialogs.
+
+---
