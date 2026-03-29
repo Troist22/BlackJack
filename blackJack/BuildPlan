@@ -16,11 +16,12 @@
   - Dealer's hand/actions, can access boot to deal cards
   - Handles house rules for dealing/hit/stand
   - Delegates shuffling to ShuffleBootLogic
-- **Table**
+- **Table** - Parent
   - Holds:
     - Boot (`List<Card>`: deck(s) in play)
     - List of players, including dealer (optional explicit dealer field)
     - Each player’s hand (`List<Card>`, for multi-hand/split)
+  **Table** - Child
   - Handles game state, deals, scoring/totals for UI
   - Upstream interface for UI events (all player actions pass through Table)
   - Downstream: Relays logic results & state to UI/FX layer
@@ -44,37 +45,45 @@
 
 ## 3. **Sound Assets To Gather & Triggers**
 
-- **card_turn_sound**  
-  Trigger: Each time a card is dealt/revealed
-- **chips_won**  
-  Trigger: Player wins round (normal win)
-- **chips_lost**  
-  Trigger: Player loses round
-- **defeat**  
-  Trigger: Player out of chips/game over
-- **new_game_sound**  
-  Trigger: New game/round start
-- **background_music** (loopable)  
-  Trigger: Main menu/game idle (starts with scene, stops on exit)
-- **split**  
-  Trigger: Player splits hand
-- **blackjack_victory**  
-  Trigger: Player hits first-hand blackjack (special winner sound)
-- **draw_sound**  
-  Trigger: Push (tie) event
-- **shuffle_sound** (loopable/minimum duration)  
-  Trigger: While ShuffleBootLogic is active (shuffling/boot rebuild logic duration)
+- **card_turn_sound**  //Pixabay: freesound_community
+- **chips_won**  //Pixabay: freesound_community
+- **chips_lost**  //Pixabay: freesound_community
+- **defeat**  //Pixabay: freesound_community
+- **new_game_sound**  //Pixabay: freesound_community
+- **background_music** (loopable)  music by IDoBerg (Pixabay)
+  Trigger: Main menu/game idle (starts with scene, stops on exit) music by IDoBerg (Pixabay)
+  Trigger: Player splits hand //Pixabay: freesound_community
+- **blackjack_victory**  //Pixabay: freesound_community
+  Trigger: Player hits first-hand blackjack (special winner sound)//Pixabay: freesound_community
+- **draw_sound**  //Pixabay: freesound_community
+  Trigger: Push (tie) event //Pixabay: freesound_community
+- **shuffle_sound** (loopable/minimum duration)   //Pixabay: freesound_community
+  Trigger: While ShuffleBootLogic is active (shuffling/boot rebuild logic duration) //Pixabay: freesound_community
+
+
 
 ---
 
 ## 4. **Other Considerations**
 
+  **Interfaces**
+     -- Possible interfaces for game logic files that would run logic for games relative to the table in play. Ensuring basic card game functions exist for dealer
+     
 - **Table is central.** All requests/updates go through Table; Dealer accesses boot via Table; Players perform actions via Table interface.
+     -- Table needs to be set up as a parent to have children run off it for other games. (Engine setup)
+     
 - **Encapsulation:** Dealer never directly accessed by UI or Player, only via Table.
-- **Easy for multipliers:** Can scale to multiple players, AI, or substitute Dealer logic.
+     --Dealer is going to hold shuffle/boot logic/link to api calls to deal.
+     
+
 - **Sound triggers are handled in UI layer** (FX), flagged by state/events set by logic.
-- **Shuffle logic is intentionally “slow”/animated for realism and is reusable for other games.**
-- **Future expansion:** Leaderboards, settings, game over modal, more sounds, animations.
+     --Sound is going to be put into parent files for table so that basic sounds are universal for all the card games and available to all while keeping it seperated into the parent so it's not accessed or adjusted without cause
+
+- **Future expansion:** Leaderboards, settings, other game models.
+  
+  **Consider renaming project to JavaCardSimulator and consider if it's worth the rebuild (Only 5 files deep currently.)
+     --Consider if renaming is possible without breaking systems but in other languages I have not had luck with this. Likely best to refactor the entire project since it's early. I could copy my 4 files over under new names/imports/inclusions
+     
 
 ---
 
