@@ -1,11 +1,10 @@
 package com.blackJack.Interface;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameView {
@@ -25,12 +24,17 @@ public class GameView {
         StackPane pane = new StackPane();
         pane.setStyle("-fx-background-color: #009245;");
 
-        VBox vBox = new VBox(10);
-        vBox.setAlignment(Pos.BOTTOM_LEFT);
+        
+        //putting a test card on the screen. Had to research some things and probably have overdone it. Could probably return to simpler syntax as solution was how it was organized in my  directories
+        Image cardImage = new Image(
+        	    getClass().getResource("/com/images/2Hearts.png").toString()
+        	);
 
-        pane.getChildren().add(vBox);
+        	ImageView cardView = new ImageView(cardImage);
+        	pane.getChildren().add(cardView);
 
-        // center in borderpane
+
+        // center 
         root.setCenter(pane);
     }
 
