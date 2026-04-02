@@ -120,3 +120,11 @@
 - Wire up FX/UI triggers for sounds, round transitions, modal dialogs.
 
 ---
+
+
+---
+
+## 7. **UI Layout for blackjack game**
+
+- Did research on layouts for FX: ref: https://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
+- Layout will be a borderpane -left/right top(HBox) bottom(HBox) center(Pane)//cards&animations
