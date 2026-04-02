@@ -17,7 +17,7 @@ public class MainView {
 
         // add menu to screen using borderpane
         BorderPane root = new BorderPane();
-        scene = new Scene(root, 800, 600);
+        scene = new Scene(root);
 
         // menu called
         root.setTop(AppMenuBar.create(stage));

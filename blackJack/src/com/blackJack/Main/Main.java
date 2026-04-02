@@ -4,6 +4,8 @@ import com.blackJack.Interface.MainView;
 
 //fx imports
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -21,11 +23,15 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		//begin program
 		
-		//set stage and begin scene
+		Rectangle2D screenSize = Screen.getPrimary().getVisualBounds(); //Added this for consistent sizing
+		//set stage and begin scene 
 		stage = primaryStage; //Sets the stage globally to be used by all scenes
 		MainView mainMenu = new MainView(stage);
 		stage.setScene(mainMenu.getScene());
 		stage.setTitle("BothKind's BlackJack");
+		//Set initial game size
+		stage.setWidth(screenSize.getWidth() / 2);
+		stage.setHeight(screenSize.getHeight() / 2);
 		stage.show();
 	}
 	
